@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Service/SignUpLogic.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +11,7 @@ class SignUpFrame extends StatelessWidget{
         create: (context)=> FrameState(),
       child: MaterialApp(
         home: SignUpWidget(),
-        theme: ThemeData(colorSchemeSeed: Color.fromRGBO(100, 127, 188, 0.1)),
+        theme: ThemeData(colorSchemeSeed: AppTheme().getColor()),
         debugShowCheckedModeBanner: false,
       ),
     );

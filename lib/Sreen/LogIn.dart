@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Service/GoogleSignIn.dart';
 
 class LogIn extends StatelessWidget{
@@ -7,7 +9,7 @@ class LogIn extends StatelessWidget{
   Widget build(BuildContext context) {
     return MaterialApp(
       home: LogInPage(),
-      theme: ThemeData(colorSchemeSeed: Color.fromRGBO(100, 127, 188, 0.1)),
+      theme: ThemeData(colorSchemeSeed: AppTheme().getColor()),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -47,7 +49,7 @@ class MyFormState extends State<MyForm>{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20,),
-            Text("Log In",style: TextStyle(fontStyle: FontStyle.italic,fontSize: 32,fontWeight: FontWeight.bold,color: Colors.black),),
+            Text("Log In",style: GoogleFonts.pacifico(textStyle: TextStyle(fontStyle: FontStyle.italic,fontSize: 32,fontWeight: FontWeight.bold,color: Colors.black)),),
             SizedBox(height: 24,),
             Form(
               key: _formKey,
