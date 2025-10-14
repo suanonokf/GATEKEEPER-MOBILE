@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Service/SignUpLogic.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class SignUpForm extends StatelessWidget{
         key: formKey,
           child: Column(
             children: [
-              Text("Sign Up",style: TextStyle(color: Colors.black, fontFamily: "Arial",fontSize: 32,fontWeight: FontWeight.bold),),
+              Text("Sign Up",style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(), fontSize: 32,fontWeight: FontWeight.bold),)),
               SizedBox(height: 30,),
               TextFormField(
                 controller: fNameTextController,
@@ -70,7 +71,7 @@ class SignUpForm extends StatelessWidget{
                   return null;
                 },
                 decoration: InputDecoration(
-                    label: Text("FirstName",style: TextStyle(color: Colors.black,fontSize: 20),),
+                    label: Text("FirstName",style: TextStyle(color: Colors.black,fontSize: 18),),
                     fillColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -88,7 +89,7 @@ class SignUpForm extends StatelessWidget{
                   return null;
                 },
                 decoration: InputDecoration(
-                    label: Text("LastName",style: TextStyle(color: Colors.black,fontSize: 20),),
+                    label: Text("LastName",style: TextStyle(color: Colors.black,fontSize: 18),),
                     fillColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -106,7 +107,7 @@ class SignUpForm extends StatelessWidget{
                   return null;
                 },
                 decoration: InputDecoration(
-                    label: Text("Email",style: TextStyle(color: Colors.black,fontSize: 20),),
+                    label: Text("Email",style: TextStyle(color: Colors.black,fontSize: 18),),
                     fillColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -134,7 +135,7 @@ class SignUpForm extends StatelessWidget{
                   return null;
                 },
                 decoration: InputDecoration(
-                    label: Text("Password",style: TextStyle(color: Colors.black,fontSize: 20),),
+                    label: Text("Password",style: TextStyle(color: Colors.black,fontSize: 18),),
                     fillColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -155,7 +156,7 @@ class SignUpForm extends StatelessWidget{
                   return null;
                 },
                 decoration: InputDecoration(
-                    label: Text("Confirmed Password",style: TextStyle(color: Colors.black,fontSize: 20),),
+                    label: Text("Confirmed Password",style: TextStyle(color: Colors.black,fontSize: 18),),
                     fillColor: Colors.black,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -165,15 +166,18 @@ class SignUpForm extends StatelessWidget{
               ),
               SizedBox(height: 30,),
               ElevatedButton(
-                  onPressed: (){
+                  onPressed: () async {
                     if(formKey.currentState!.validate()){
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Valid !")));
                       var fName = fNameTextController.text.trim();
                       var lName = lNameTextController.text.trim();
                       var email = textController.text.trim();
                       var password = passwordTextController.text.trim();
-                      signUpLogic signUp = signUpLogic(fName,lName,email,password);
-                      signUp.submit();
+                      var confirmedPassword = confirmedPasswordTextController.text.trim();
+                      signUpLogic signUp = signUpLogic(fName,lName,email,password,confirmedPassword);
+                      String valid = await signUp.submit();
+                      if(valid=="Submitted"){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Valid !")));
+                      }
                     }
                   },
                   child: Text("Submit",style:TextStyle(color: Colors.black87,fontSize: 20)),

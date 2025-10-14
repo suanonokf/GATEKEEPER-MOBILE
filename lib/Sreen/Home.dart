@@ -17,8 +17,11 @@ class Home extends StatelessWidget{
 }
 
 class HomeFrame extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     // DateTime selectDate = DateTime.now();
     // void pickedDate() async{
     //   DateTime? picked = await showDatePicker(context: context, firstDate: DateTime(2000), lastDate: DateTime(2100));
@@ -26,87 +29,75 @@ class HomeFrame extends StatelessWidget{
     //     selectDate=picked;
     //   }
     // }
-    String formattedDate = DateFormat('E-MMM d-yyyy').format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme().getColor(),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 20,
           children: [
-            Text("Home",style: GoogleFonts.oldenburg(textStyle: TextStyle(color: Color.fromRGBO(60, 79, 122, 0.9),fontWeight: FontWeight.bold)),),
-            Icon(Icons.calendar_month_outlined,color: Color.fromRGBO(60, 79, 122, 0.9),),
-            Text("$formattedDate",style: GoogleFonts.nobile(textStyle: TextStyle(color: Color.fromRGBO(60, 79, 122, 0.9),fontWeight: FontWeight.bold)),),
+            Text("Home",style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(),fontWeight: FontWeight.bold,fontSize: 37)),),
           ],
         )
       ),
       backgroundColor: Theme.of(context).secondaryHeaderColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(80, 0, 80, 40),
-            child: Text("What are we doing today ?",style: GoogleFonts.oldenburg(textStyle: TextStyle(color: Color.fromRGBO(60, 79, 122, 0.9), fontSize: 30, fontWeight: FontWeight.bold)),),
+      body: ListView(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(screenWidth/10, 0, screenWidth/10, screenWidth/5),
+                  child: Text("What are we \ndoing today ?",style: GoogleFonts.notoSans(textStyle: TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold)),),
+                ),
+                Center(
+                  child: FloatingActionButton(
+                    onPressed: (){
+                      // Pop up for creating a tasks
+                    },
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.black,
+                    child: Icon(Icons.add,size: 30,),
+                  ),
+                ),
+                SizedBox(height: screenHeight/20,),
+                TaskView()
+              ],
+            ),
           ),
-            Center(
-              child: FloatingActionButton(
-                  onPressed: (){
-                    // Pop up for creating a tasks
-                  },
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Colors.black,
-                child: Icon(Icons.add),
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.fromLTRB(screenWidth/10, 0, screenWidth/10, screenHeight/30),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppTheme().getColor()
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: (screenWidth/3)-60,
+            children: [
+              IconButton(
+                onPressed:(){
+                  //route to home screen
+                },
+                icon: Icon(Icons.home_filled,color: AppTheme().getIconColor(),size: 40,),
               ),
-            ),
-            SizedBox(height: 120,),
-            Container(
-              height: 400,
-              width: 400,
-              decoration: BoxDecoration(
-                color: AppTheme().getColor(),
-                borderRadius: BorderRadius.circular(30)
+              IconButton(
+                onPressed:(){
+                  //route to tasks screen
+                },
+                icon: Icon(Icons.task,color: AppTheme().getIconColor(),size: 40,),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                    child: TaskView()
-                ),
-            ),
-            SizedBox(height: 30,),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(199, 214, 242, 0.53)
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 50,
-                  children: [
-                    IconButton(
-                        onPressed:(){
-
-                        },
-                        icon: Icon(Icons.home_filled,color: Color.fromRGBO(60, 79, 122, 0.9),size: 40,),
-                    ),
-                    IconButton(
-                      onPressed:(){
-
-                      },
-                      icon: Icon(Icons.task,color: Color.fromRGBO(60, 79, 122, 0.9),size: 40,),
-                    ),
-                    IconButton(
-                      onPressed:(){
-
-                      },
-                      icon: Icon(Icons.settings,color: Color.fromRGBO(60, 79, 122, 0.9),size: 40,),
-                    ),
-                  ],
-                ),
+              IconButton(
+                onPressed:(){
+                  // route to setting screen
+                },
+                icon: Icon(Icons.settings,color: AppTheme().getIconColor(),size: 40,),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -120,7 +111,7 @@ class TaskView extends StatefulWidget{
 class TaskViewState extends State<TaskView>{
   @override
   Widget build(BuildContext context) {
-    List<dynamic> tasksList =["Orange","Apple","Banana","",""];
+    List<dynamic> tasksList =["Orange","Apple","Banana","","","","",""];
     NewTasks tasks = NewTasks(tasksList);
     return  ListView.builder(
         shrinkWrap: true,
@@ -147,7 +138,7 @@ class TaskViewState extends State<TaskView>{
                 SizedBox(width: 30,),
                 Column(
                   children: [
-                    Text("${tasksList[index]}",style: GoogleFonts.arima(textStyle: TextStyle(color: Colors.black,fontSize: 18)),),
+                    Text("${tasksList[index]}",style: GoogleFonts.notoSans(textStyle: TextStyle(color: Colors.black,fontSize: 18)),),
                   ],
                 )
               ],

@@ -49,7 +49,7 @@ class MyFormState extends State<MyForm>{
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20,),
-            Text("Log In",style: GoogleFonts.pacifico(textStyle: TextStyle(fontStyle: FontStyle.italic,fontSize: 32,fontWeight: FontWeight.bold,color: Colors.black)),),
+            Text("Log In",style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: AppTheme().getHeaderColor())),),
             SizedBox(height: 24,),
             Form(
               key: _formKey,
@@ -67,8 +67,8 @@ class MyFormState extends State<MyForm>{
                     },
                     decoration: InputDecoration(
                     icon: Icon(Icons.email),
-                    iconColor: Colors.black,
-                    label:Text("Email",style: TextStyle(color: Colors.black,fontSize: 22),),
+                    iconColor: AppTheme().getIconColor(),
+                    label:Text("Email",style: TextStyle(color: Colors.black,fontSize: 18),),
                     hintText: "****@gmail.com",
                     fillColor: Colors.black,
                       border: OutlineInputBorder(
@@ -100,15 +100,15 @@ class MyFormState extends State<MyForm>{
                       },
                       decoration: InputDecoration(
                       icon: Icon(Icons.password),
-                      iconColor: Colors.black,
-                      label:Text("Password",style: TextStyle(color: Colors.black,fontSize: 22),),
+                      iconColor: AppTheme().getIconColor(),
+                      label:Text("Password",style: TextStyle(color: Colors.black,fontSize: 18),),
                       fillColor: Colors.black,
                         border: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black12),
                           borderRadius: BorderRadius.circular(10.0)
                         )
                   ),
-                    style: TextStyle(fontSize: 20),
+                   style: TextStyle(fontSize: 20),
                   obscureText: true,),
                 ),
                 SizedBox(height: 40,),
@@ -128,7 +128,10 @@ class MyFormState extends State<MyForm>{
                     padding: EdgeInsets.all(30),
                   child: Column(
                     children: [
-                      Text("Sign Up With:",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
+                      Divider(
+                        color: AppTheme().getHeaderColor(),
+                        thickness: 1,
+                      ),
                       SizedBox(height: 30,),
                       IconButton(
                           onPressed: handleGoogleSignIn,

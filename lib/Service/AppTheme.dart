@@ -6,4 +6,10 @@ class AppTheme{
   Color getColor(){
     return color;
   }
+  Color getHeaderColor(){
+    return Color.fromRGBO(60, 79, 122, 0.9);
+  }
+  Color getIconColor(){
+    return Color.fromRGBO(60, 79, 122, 0.9);
+  }
 }

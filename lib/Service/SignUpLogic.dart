@@ -7,23 +7,27 @@ class signUpLogic {
     String lastName;
     String email;
     String password;
+    String confirmedPassword;
 
-    signUpLogic(this.firstName,this.lastName,this.email,this.password);
+    signUpLogic(this.firstName,this.lastName,this.email,this.password,this.confirmedPassword);
 
     Future<String> submit() async{
       Map<String,String> payload={
-        "firstName": this.firstName,
-        "lastName": this.lastName,
+        "nom_complet": this.firstName+this.lastName,
         "email": this.email,
-        "password": this.password
+        "date_naissance": "01-04-2005",
+        "password": this.password,
+        "password_confirmation": this.confirmedPassword
+
       };
       try{
         final response = await http.post(
-          Uri.parse('https://your-backend-api.com/api/signup'),
+          Uri.parse('http://localhost:8080/users'),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode(payload),
         );
         if(response.statusCode==200 || response.statusCode==201){
+          print(response.statusCode);
           return "Submitted";
         }
         else{
