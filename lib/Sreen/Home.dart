@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:namer_app/Service/AppTheme.dart';
-import 'package:namer_app/Service/QrScanner.dart';
-import 'package:namer_app/Service/TaskListController/NewTasks.dart';
+import 'package:namer_app/Service/QRScanner.dart';
+
 
 class Home extends StatelessWidget{
   @override
@@ -34,7 +34,9 @@ class HomeFrame extends StatelessWidget{
         padding:  EdgeInsets.all(screenWidth/40),
         child: ListView(
             children: [
-              QrScanner()
+              QRScanner(),
+              SizedBox(height: 30,),
+              SearchBox(),
             ],
           ),
       ),
@@ -53,7 +55,7 @@ class HomeFrame extends StatelessWidget{
                 onPressed:(){
                   //route to home screen
                 },
-                icon: Icon(Icons.home_rounded,color: AppTheme().getIconColor(),size: 40,),
+                icon: Icon(CupertinoIcons.house_fill,color: AppTheme().getIconColor(),size: 40,),
               ),
               IconButton(
                 onPressed:(){
@@ -65,7 +67,7 @@ class HomeFrame extends StatelessWidget{
                 onPressed:(){
                   // route to setting screen
                 },
-                icon: Icon(Icons.settings_outlined,color: AppTheme().getIconColor(),size: 40,),
+                icon: Icon(CupertinoIcons.settings,color: AppTheme().getIconColor(),size: 40,),
               ),
             ],
           ),
@@ -73,4 +75,88 @@ class HomeFrame extends StatelessWidget{
       ),
     );
   }
+}
+
+class SearchBox extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    final idTextController = TextEditingController();
+    final height = MediaQuery.of(context).size.height/2;
+    final width =  MediaQuery.of(context).size.width/2;
+    final  _key = GlobalKey<FormState>();
+    return Container(
+      height: height,
+     width: height,
+     decoration: BoxDecoration(
+         borderRadius: BorderRadius.circular(20),
+       boxShadow: [
+         BoxShadow(color: AppTheme().getColor(),blurRadius: 2.8),
+         BoxShadow(color: Color.fromRGBO(255, 255, 255, 0.55),blurRadius: 0.8),
+       ]
+     ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding:  EdgeInsets.all(height/15),
+              child: Text("Search Student Info", style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(),fontSize: 25,fontWeight: FontWeight.bold)),),
+            ),
+            SizedBox(height: height/20,),
+            Padding(
+              padding:  EdgeInsets.fromLTRB(width/9,0,width/4,0),
+              child: TextFormField(
+                key: _key,
+                keyboardType: TextInputType.number,
+                controller: idTextController,
+                validator: (value){
+                  if(value!=null){
+                    return "Enter ID";
+                  }
+                  else if(value is! num){
+                    return "Invalid ID";
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: CupertinoColors.white,
+                  icon: Icon(CupertinoIcons.search),
+                  label: Text("Search",style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 15)),),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.white54),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.white54)
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.white54)
+                  )
+                ),
+              ),
+            ),
+            SizedBox(height: height/20,),
+            ElevatedButton(
+                onPressed: (){
+                    if(_key.currentState!.validate()){
+                       ScaffoldMessenger(child: Text("Validate"));
+                    }
+                },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme().getColor(),
+                fixedSize: Size(300, 20),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+              ),
+                child: Text("Search",style: GoogleFonts.notoSans(textStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme().getHeaderColor())),),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
 }
