@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 class AppTheme{
-  Color color = Color.fromRGBO(100, 127, 188, 0.1);
+  Color color = Color.fromRGBO(175, 204, 255, 0.75);
   AppTheme();
   Color getColor(){
     return color;

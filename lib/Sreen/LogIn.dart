@@ -42,21 +42,24 @@ class MyFormState extends State<MyForm>{
   final _anotherTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final paddingSize = screenWidth/20;
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(height: screenHeight/20,),
             Text("Log In",style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: AppTheme().getHeaderColor())),),
-            SizedBox(height: 24,),
+            SizedBox(height: screenHeight/20,),
             Form(
               key: _formKey,
                 child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.fromLTRB(paddingSize, paddingSize/2, paddingSize, paddingSize/2),
                   child: TextFormField(
                     controller: _textController,
                     validator: (value){
@@ -79,7 +82,7 @@ class MyFormState extends State<MyForm>{
                   style: TextStyle(fontSize: 20),),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:  EdgeInsets.fromLTRB(paddingSize, paddingSize/2, paddingSize, paddingSize/2),
                   child: TextFormField(
                       controller: _anotherTextController,
                       validator: (value){
@@ -111,7 +114,7 @@ class MyFormState extends State<MyForm>{
                    style: TextStyle(fontSize: 20),
                   obscureText: true,),
                 ),
-                SizedBox(height: 40,),
+                SizedBox(height: screenHeight/30,),
                 ElevatedButton(
                     onPressed: (){
                       if(_formKey.currentState!.validate()){
@@ -122,17 +125,20 @@ class MyFormState extends State<MyForm>{
                       padding: const EdgeInsets.all(8.0),
                       child: Text("Submit",style: TextStyle(color: Colors.black87,fontSize: 20),),
                     ),
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+                    )
                 ),
                 Padding(
-                    padding: EdgeInsets.all(30),
+                    padding: EdgeInsets.all(paddingSize),
                   child: Column(
                     children: [
                       Divider(
                         color: AppTheme().getHeaderColor(),
                         thickness: 1,
                       ),
-                      SizedBox(height: 30,),
+                      SizedBox(height: paddingSize,),
                       IconButton(
                           onPressed: handleGoogleSignIn,
                           icon: Image.asset("assets/google_icon.png"),

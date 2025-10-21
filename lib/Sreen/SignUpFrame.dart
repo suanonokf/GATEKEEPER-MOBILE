@@ -47,6 +47,10 @@ class SignUpWidget extends StatelessWidget{
 class SignUpForm extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final paddingSize = height/20;
+
     var appState = context.watch<FrameState>();
     var formKey = appState._formKey;
     var textController = appState._emailTextController;
@@ -55,13 +59,13 @@ class SignUpForm extends StatelessWidget{
     var passwordTextController = appState._passwordTextController;
     var confirmedPasswordTextController = appState._confirmedPasswordTextController;
     return Padding(
-      padding: const EdgeInsets.all(30.0),
+      padding:  EdgeInsets.all(paddingSize),
       child: Form(
         key: formKey,
           child: Column(
             children: [
               Text("Sign Up",style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(), fontSize: 32,fontWeight: FontWeight.bold),)),
-              SizedBox(height: 30,),
+              SizedBox(height: paddingSize,),
               TextFormField(
                 controller: fNameTextController,
                 validator: (value){
@@ -79,7 +83,7 @@ class SignUpForm extends StatelessWidget{
                     )
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: paddingSize/5,),
               TextFormField(
                 controller: lNameTextController,
                 validator: (value){
@@ -97,7 +101,7 @@ class SignUpForm extends StatelessWidget{
                     )
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: paddingSize/5,),
               TextFormField(
                 controller: textController,
                 validator: (value){
@@ -115,7 +119,7 @@ class SignUpForm extends StatelessWidget{
                     )
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: paddingSize/5,),
               TextFormField(
                 controller: passwordTextController,
                 validator: (value){
@@ -143,7 +147,7 @@ class SignUpForm extends StatelessWidget{
                     )
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(height: paddingSize/5,),
               TextFormField(
                 controller: confirmedPasswordTextController,
                 validator: (value){
@@ -164,7 +168,7 @@ class SignUpForm extends StatelessWidget{
                     )
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(height: paddingSize,),
               ElevatedButton(
                   onPressed: () async {
                     if(formKey.currentState!.validate()){
@@ -181,7 +185,7 @@ class SignUpForm extends StatelessWidget{
                     }
                   },
                   child: Text("Submit",style:TextStyle(color: Colors.black87,fontSize: 20)),
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
               )
             ],
           )
