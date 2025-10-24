@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Service/QRScanner.dart';
+import 'package:namer_app/Service/StudentService.dart';
 
 
 class Home extends StatelessWidget{
@@ -77,16 +78,24 @@ class HomeFrame extends StatelessWidget{
   }
 }
 
-class SearchBox extends StatelessWidget{
+class SearchBox extends StatefulWidget{
+  @override
+  State<SearchBox> createState() => _SearchBoxState();
+}
+
+class _SearchBoxState extends State<SearchBox> {
+  String id="";
   @override
   Widget build(BuildContext context) {
     final idTextController = TextEditingController();
+
     final height = MediaQuery.of(context).size.height/2;
     final width =  MediaQuery.of(context).size.width/2;
-    final  _key = GlobalKey<FormState>();
+    final  key = GlobalKey<FormState>();
     return Container(
-      height: height,
-     width: height,
+      constraints: BoxConstraints(
+        minHeight: height,
+      ),
      decoration: BoxDecoration(
          borderRadius: BorderRadius.circular(20),
        boxShadow: [
@@ -94,69 +103,82 @@ class SearchBox extends StatelessWidget{
          BoxShadow(color: Color.fromRGBO(255, 255, 255, 0.55),blurRadius: 0.8),
        ]
      ),
-      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding:  EdgeInsets.all(height/15),
+              padding:  EdgeInsets.only(top: height/10),
               child: Text("Search Student Info", style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(),fontSize: 25,fontWeight: FontWeight.bold)),),
             ),
             SizedBox(height: height/20,),
-            Padding(
-              padding:  EdgeInsets.fromLTRB(width/9,0,width/4,0),
-              child: TextFormField(
-                key: _key,
-                keyboardType: TextInputType.number,
-                controller: idTextController,
-                validator: (value){
-                  if(value!=null){
-                    return "Enter ID";
-                  }
-                  else if(value is! num){
-                    return "Invalid ID";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: CupertinoColors.white,
-                  icon: Icon(CupertinoIcons.search),
-                  label: Text("Search",style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 15)),),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.white54),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.white54)
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide(color: Colors.white54)
-                  )
+            Form(
+                key: key,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(width/9,0,width/4,0),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        controller: idTextController,
+                        validator: (value){
+                          if (value == null || value.trim().isEmpty) {
+                            return "Enter ID";
+                          }
+                          final parsed = num.tryParse(value);
+                          if (parsed == null) {
+                            return "Invalid ID";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: CupertinoColors.white,
+                          icon: Icon(CupertinoIcons.search),
+                          label: Text("Search",style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 15)),),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: Colors.white54),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: Colors.white54)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(color: Colors.white54)
+                          )
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height/20,),
+                    ElevatedButton(
+                      onPressed: (){
+                        if(key.currentState!.validate()){
+                          setState(() {
+                            id = idTextController.text;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Valid !")));
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme().getColor(),
+                          fixedSize: Size(height/1.7, width/5),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
+                      ),
+                      child: Text("Search",style: GoogleFonts.notoSans(textStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme().getHeaderColor(),fontSize: 17)),),
+                    ),
+
+                    if(id.isNotEmpty)
+                      Padding(
+                        padding:  EdgeInsets.only(top: height/10),
+                        child: StudentService(id),
+                      )
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: height/20,),
-            ElevatedButton(
-                onPressed: (){
-                    if(_key.currentState!.validate()){
-                       ScaffoldMessenger(child: Text("Validate"));
-                    }
-                },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme().getColor(),
-                fixedSize: Size(300, 20),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
-              ),
-                child: Text("Search",style: GoogleFonts.notoSans(textStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme().getHeaderColor())),),
-            )
           ],
         ),
-      ),
     );
   }
-
 }
