@@ -38,7 +38,6 @@ class _StudentServiceState extends State<StudentService> {
     }
     return body;
   }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +47,7 @@ class _StudentServiceState extends State<StudentService> {
       ),
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(color: AppTheme().getColor(),blurRadius: 2, spreadRadius: 3,)
+          BoxShadow(color: Colors.white, spreadRadius: 3,)
         ],
         color: CupertinoColors.white,
         borderRadius: BorderRadius.circular(15)

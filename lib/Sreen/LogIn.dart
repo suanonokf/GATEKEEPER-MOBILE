@@ -130,22 +130,6 @@ class MyFormState extends State<MyForm>{
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
                     )
                 ),
-                Padding(
-                    padding: EdgeInsets.all(paddingSize),
-                  child: Column(
-                    children: [
-                      Divider(
-                        color: AppTheme().getHeaderColor(),
-                        thickness: 1,
-                      ),
-                      SizedBox(height: paddingSize,),
-                      IconButton(
-                          onPressed: handleGoogleSignIn,
-                          icon: Image.asset("assets/google_icon.png"),
-                      )
-                    ],
-                  ),
-                )
               ],
             ))
           ],
