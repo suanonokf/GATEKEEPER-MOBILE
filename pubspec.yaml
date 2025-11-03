@@ -17,6 +17,8 @@ dependencies:
   intl: ^0.18.1
   mobile_scanner: ^3.5.0
   cupertino_icons: ^1.0.6
+  flutter_native_splash: ^2.4.7
+  flutter_secure_storage: ^8.0.0
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +27,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/splashImage.png
+
+flutter_native_splash:
+  color: "E8F9FF"
+  color_ios: "E8F9FF"
+  image: assets/splashImage.png
+  android_12:
+    color: "E8F9FF"
+    image: assets/splashImage.png

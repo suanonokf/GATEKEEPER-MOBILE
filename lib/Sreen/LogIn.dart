@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:namer_app/Service/AppLogIn.dart';
 import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Service/GoogleSignIn.dart';
 
 class LogIn extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LogInPage(),
-      theme: ThemeData(colorSchemeSeed: AppTheme().getColor()),
-      debugShowCheckedModeBanner: false,
-    );
+    return LogInPage();
   }
 }
 
@@ -45,13 +43,13 @@ class MyFormState extends State<MyForm>{
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final paddingSize = screenWidth/20;
+    FlutterSecureStorage secureStorage = FlutterSecureStorage();
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: screenHeight/20,),
             Text("Log In",style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 35,fontWeight: FontWeight.bold,color: AppTheme().getHeaderColor())),),
             SizedBox(height: screenHeight/20,),
             Form(
@@ -118,6 +116,10 @@ class MyFormState extends State<MyForm>{
                 ElevatedButton(
                     onPressed: (){
                       if(_formKey.currentState!.validate()){
+                        var accountToken = AppLogIn(_textController.text, _anotherTextController.text).getAccount();
+                        secureStorage.write(key: "accountToken", value: accountToken.toString());
+                        // Use FlutterStorageSecure to store the token / create a splash screen ps: don't forget android and ios config
+                        Navigator.pushNamed(context, '/Home');
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Valid !")));
                       }
                     },

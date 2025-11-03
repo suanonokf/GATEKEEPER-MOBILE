@@ -12,14 +12,7 @@ import 'package:provider/provider.dart';
 class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => SearchBoxModel(),
-      child: MaterialApp(
-        home: HomeFrame(),
-        theme: ThemeData(colorSchemeSeed: AppTheme().getColor()),
-        debugShowCheckedModeBanner: false,
-      ),
-    );
+    return HomeFrame();
   }
 }
 

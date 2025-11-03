@@ -27,7 +27,6 @@ class _StudentServiceState extends State<StudentService> {
     try{
       var response = await http.get(
         Uri.parse("http://localhost:8080/roles/1"),
-        headers: payload,
       );
       if(response.statusCode==200){
          body= response.body;
