@@ -49,7 +49,24 @@ class QRScanner extends StatelessWidget{
   }
 }
 
-class MobileScan extends StatelessWidget{
+class MobileScan extends StatefulWidget{
+
+  @override
+  State<StatefulWidget> createState() => MobileScanState();
+
+}
+
+class MobileScanState extends State<MobileScan> {
+  String mybarcode ="Scan ID Card";
+  List<Barcode> barcodes =[];
+  void _barcodeDetection(BarcodeCapture capture){
+    barcodes=capture.barcodes;
+    if(barcodes.isNotEmpty){
+      setState(() {
+        mybarcode=barcodes.toString();
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,31 +76,55 @@ class MobileScan extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            IconButton(
-                onPressed: (){
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                    Icons.keyboard_return_rounded,
-                  semanticLabel: "Return",
-                )
+            Expanded(
+              flex:1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding:  EdgeInsets.only(top: MediaQuery.of(context).size.width/10),
+                    child: IconButton(
+                        color: AppTheme().getIconColor(),
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          size: 30,
+                          Icons.arrow_back_rounded,
+                          semanticLabel: "Return",
+                        )
+                    ),
+                  ),
+                ],
+              )
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height*0.7,
-              width: MediaQuery.of(context).size.width*0.85,
-              child: MobileScanner(
-                  onDetect: (capture){
-                    List<Barcode> barcodes = capture.barcodes;
-                    for(Barcode b in barcodes){
-                      print("Barcode: $b");
-                    }
-                  }
+            Expanded(
+              flex: 5,
+              child: Padding(
+                padding:  EdgeInsets.all(MediaQuery.of(context).size.width/20),
+                child: MobileScanner(
+                    onDetect: _barcodeDetection,
+                ),
               ),
             ),
+            Expanded(
+              flex: 2,
+                child: Padding(
+                  padding:  EdgeInsets.all(30),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme().getColor(),
+                      borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width/20)
+                    ),
+                    child: Center(
+                      child: Text("$mybarcode",style: GoogleFonts.notoSans(textStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
+                    ),
+                  ),
+                )
+            )
           ],
         ),
       ),
     );
   }
-
 }

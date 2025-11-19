@@ -6,6 +6,7 @@ import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Service/QRScanner.dart';
 import 'package:namer_app/Service/StudentService.dart';
 import 'package:namer_app/Sreen/HistoryScreen.dart';
+import 'package:namer_app/Sreen/SettingScreen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -16,65 +17,59 @@ class Home extends StatelessWidget{
   }
 }
 
-class HomeFrame extends StatelessWidget{
+class HomeFrame extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState()=> HomeFrameState();
+}
+class HomeFrameState extends State<HomeFrame>{
+  int _selectedIndex=0;
 
+  void _setIndex(int index){
+    setState((){
+      _selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      body:IndexedStack(
+        index: _selectedIndex,
+        children: [
+          HomePage(), HistoryScreen(),SettingScreen()
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).secondaryHeaderColor,
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(icon: Icon(CupertinoIcons.house_fill,color: AppTheme().getIconColor(),size: 40,),label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.history_sharp,color: AppTheme().getIconColor(),size: 40,),label: "Search History"),
+          BottomNavigationBarItem(icon:Icon(CupertinoIcons.settings,color: AppTheme().getIconColor(),size: 40,),label: "Settings")
+        ],
+        onTap: _setIndex,
+      ),
+    );
+  }
+}
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(175, 204, 255, 0.35),
         title:
-            Text("Home",style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(),fontWeight: FontWeight.bold,fontSize: 30)),),
+        Text("Home",style: GoogleFonts.notoSans(textStyle: TextStyle(color: AppTheme().getHeaderColor(),fontWeight: FontWeight.bold,fontSize: 30)),),
       ),
       backgroundColor: Theme.of(context).secondaryHeaderColor,
       body: Padding(
-        padding:  EdgeInsets.all(screenWidth/40),
-        child: ListView(
-            children: [
-              QRScanner(),
-              SizedBox(height: 30,),
-              SearchBox()
-            ],
-          ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.fromLTRB(screenWidth/20, 0, screenWidth/20, screenHeight/30),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Color.fromRGBO(175, 204, 255, 0.35)
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: (screenWidth/3)-60,
-            children: [
-              IconButton(
-                onPressed:(){
-                  //route to home screen
-                },
-                icon: Icon(CupertinoIcons.house_fill,color: AppTheme().getIconColor(),size: 40,),
-              ),
-              IconButton(
-                onPressed:(){
-                  //route to tasks screen
-                  Navigator.push(context,
-                      CupertinoPageRoute(
-                        builder: (context)=>HistoryScreen()
-                      )
-                  );
-                },
-                icon: Icon(Icons.history_sharp,color: AppTheme().getIconColor(),size: 40,),
-              ),
-              IconButton(
-                onPressed:(){
-                  // route to setting screen
-                },
-                icon: Icon(CupertinoIcons.settings,color: AppTheme().getIconColor(),size: 40,),
-              ),
-            ],
-          ),
+          padding: EdgeInsetsGeometry.all(MediaQuery.of(context).size.width/40),
+          child: ListView(
+           children: [
+            QRScanner(),
+            SizedBox(height: 30,),
+            SearchBox()
+           ],
         ),
       ),
     );
@@ -87,15 +82,20 @@ class SearchBoxModel extends ChangeNotifier{
     id = newId;
     notifyListeners();
   }
-  var History =[];
-  List<dynamic> getHistory(){
-    if(!History.contains(id)){
+  List<String> History =[];
+  List<String> getHistory(){
+    if(id.isNotEmpty && !History.contains(id)){
       History.add(id);
       return History;
     }
     else{
       return History;
     }
+  }
+  void reset(){
+    History=[];
+    id="";
+    notifyListeners();
   }
 }
 class SearchBox extends StatelessWidget{

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:namer_app/Service/AppTheme.dart';
 import 'package:namer_app/Sreen/LogIn.dart';
-import 'package:namer_app/Sreen/SignUpFrame.dart';
 import 'package:namer_app/Sreen/SplashScreen.dart';
 import 'package:provider/provider.dart';
 

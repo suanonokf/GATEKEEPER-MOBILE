@@ -84,8 +84,8 @@ class MyFormState extends State<MyForm>{
                   child: TextFormField(
                       controller: _anotherTextController,
                       validator: (value){
-                        if(value==null){
-                          return "Please enter your password";
+                        if(value!.length<=4){
+                          return " Password must contain at least 5 characters";
                         }
                         final hasUpperCase = RegExp(r'[a-z]').hasMatch(value);
                         final hasLowerCase = RegExp(r"[A-Z]").hasMatch(value);
