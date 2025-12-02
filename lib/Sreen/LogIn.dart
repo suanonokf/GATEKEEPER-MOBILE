@@ -84,8 +84,8 @@ class MyFormState extends State<MyForm>{
                   child: TextFormField(
                       controller: _anotherTextController,
                       validator: (value){
-                        if(value!.length<=4){
-                          return " Password must contain at least 5 characters";
+                        if(value!.length<=7){
+                          return " Password must contain at least 8 characters";
                         }
                         final hasUpperCase = RegExp(r'[a-z]').hasMatch(value);
                         final hasLowerCase = RegExp(r"[A-Z]").hasMatch(value);
@@ -114,13 +114,17 @@ class MyFormState extends State<MyForm>{
                 ),
                 SizedBox(height: screenHeight/30,),
                 ElevatedButton(
-                    onPressed: (){
+                    onPressed: () async {
                       if(_formKey.currentState!.validate()){
-                        var accountToken = AppLogIn(_textController.text, _anotherTextController.text).getAccount();
-                        secureStorage.write(key: "accountToken", value: accountToken.toString());
-                        // Use FlutterStorageSecure to store the token / create a splash screen ps: don't forget android and ios config
-                        Navigator.pushNamed(context, '/Home');
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Valid !")));
+                        var accountToken = await AppLogIn(_textController.text, _anotherTextController.text).getAccount();
+                        if(accountToken!="Invalid"){
+                          secureStorage.write(key: "accountToken", value: accountToken.toString());
+                          // Use FlutterStorageSecure to store the token / create a splash screen ps: don't forget android and ios config
+                          Navigator.pushNamed(context, '/Home');
+                        }
+                        else{
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("InValid Credentials!")));
+                        }
                       }
                     },
                     child: Padding(

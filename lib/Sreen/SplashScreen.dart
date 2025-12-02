@@ -19,7 +19,6 @@ class SplashScreenState extends State<SplashScreen>{
     await Future.delayed(Duration(seconds: 2));
     Future<String?> read = secureStorage.read(key: 'accountToken');
     if(read.toString()!="Instance of 'Future<String?>'"){
-      print("Token: $read");
       Navigator.pushNamed(context, '/Home');
     }
     else{

@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:namer_app/Service/AppTheme.dart';
 
@@ -57,15 +61,41 @@ class MobileScan extends StatefulWidget{
 }
 
 class MobileScanState extends State<MobileScan> {
-  String mybarcode ="Scan ID Card";
+  FlutterSecureStorage secureStorage = new FlutterSecureStorage();
+  String mybarcode ="";
   List<Barcode> barcodes =[];
+  var data;
   void _barcodeDetection(BarcodeCapture capture){
     barcodes=capture.barcodes;
     if(barcodes.isNotEmpty){
       setState(() {
         mybarcode=barcodes.toString();
+        data = verifyQrCode(mybarcode);
       });
     }
+  }
+  Future<String> verifyQrCode(String barcodes) async{
+    String result ="";
+    Map<String,String> payload ={
+      "qr_code": barcodes
+    };
+    var token = secureStorage.read(key: 'accountToken');
+        var response = await http.post(
+          Uri.parse("http://10.0.2.2:8000/api/gatekeeper/verify/qr-code"),
+          headers: {
+            'Content-Type':'application/json',
+            'Authorization':'Bearer $token'
+          },
+          body: jsonEncode(payload)
+        );
+        if(response.statusCode==200 || response.statusCode==201){
+          result=response.body;
+        }
+        else{
+          return "Status Code: ${response.statusCode}";
+        }
+        var info = jsonDecode(result);
+        return "Data: ${info['data']}";
   }
   @override
   Widget build(BuildContext context) {
@@ -117,7 +147,7 @@ class MobileScanState extends State<MobileScan> {
                       borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width/20)
                     ),
                     child: Center(
-                      child: Text("$mybarcode",style: GoogleFonts.notoSans(textStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
+                      child: Text("$data",style: GoogleFonts.notoSans(textStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),),
                     ),
                   ),
                 )

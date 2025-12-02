@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:namer_app/Service/AppTheme.dart';
@@ -14,6 +17,7 @@ class StudentService extends StatefulWidget{
 
 class _StudentServiceState extends State<StudentService> {
   late Future<String> studentInfo;
+  FlutterSecureStorage secureStorage = new FlutterSecureStorage();
   @override
   void initState(){
     super.initState();
@@ -21,21 +25,37 @@ class _StudentServiceState extends State<StudentService> {
   }
    Future<String> searchStudentInfo()async{
     String body="";
+    final token = await secureStorage.read(key: 'accountToken');
     Map<String,String>payload={
-      "id": widget.studentId,
+      "student_id": widget.studentId,
     };
     try{
-      var response = await http.get(
-        Uri.parse("http://localhost:8080/roles/1"),
+      var response = await http.post(
+        Uri.parse("http://10.0.2.2:8000/api/gatekeeper/verify/id"),
+        headers: {
+          'Content-Type':'application/json',
+          'Authorization':'Bearer $token'
+        },
+        body: jsonEncode(payload)
       );
-      if(response.statusCode==200){
+      if(response.statusCode==200 || response.statusCode==201){
          body= response.body;
+      }
+      else if(response.statusCode==404){
+        return "Student Not Found";
+      }
+      else{
+        return "Status: ${response.statusCode}";
       }
     }
     catch(error){
       return "Error: $error";
     }
-    return body;
+    if(body.isEmpty) return "Empty Response";
+    var result = jsonDecode(body);
+    return " ID: ${result['data']['student_id']} \n"
+        " Name: ${result['data']['name']} \n "
+        "Email: ${result['data']['email']}";
   }
   @override
   Widget build(BuildContext context) {
@@ -62,8 +82,11 @@ class _StudentServiceState extends State<StudentService> {
           }
           else{
             return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(asyncSnapshot.requireData)
+                Center(
+                  child: Text(asyncSnapshot.requireData,style: GoogleFonts.notoSans(fontSize: 22,fontWeight: FontWeight.bold),),
+                )
               ],
             );
           }

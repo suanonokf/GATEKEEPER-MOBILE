@@ -136,15 +136,10 @@ class SearchBox extends StatelessWidget{
                 Padding(
                   padding: EdgeInsets.fromLTRB(width/9,0,width/4,0),
                   child: TextFormField(
-                    keyboardType: TextInputType.number,
                     controller: idTextController,
                     validator: (value){
                       if (value == null || value.trim().isEmpty) {
                         return "Enter ID";
-                      }
-                      final parsed = num.tryParse(value);
-                      if (parsed == null) {
-                        return "Invalid ID";
                       }
                       return null;
                     },
@@ -173,7 +168,6 @@ class SearchBox extends StatelessWidget{
                   onPressed: (){
                     if(key.currentState!.validate()){
                        searchBox.setId(idTextController.text);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Valid !")));
                     }
                   },
                   style: ElevatedButton.styleFrom(

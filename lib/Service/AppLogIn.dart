@@ -16,16 +16,16 @@ class AppLogIn{
     };
     try{
       final response= await http.post(
-        Uri.parse("http://localhost:8080/users"),
+        Uri.parse("http://10.0.2.2:8000/api/auth/gatekeeper/login"),
         headers: {'Content-Type':'application/json'},
         body: jsonEncode(payload)
       );
       if(response.statusCode==201 || response.statusCode==200){
         responseBody = jsonDecode(response.body);
-        return "Response: $responseBody";
+        return responseBody['data']['token'];
       }
       else{
-        return "Unexpected status Code: ${response.statusCode}";
+        return "Invalid";
       }
     }
     on SocketException{
