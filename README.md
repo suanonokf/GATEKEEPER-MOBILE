@@ -1,16 +1,38 @@
-# to_do_list_ui1
+# Gatekeeper Mobile
 
-A new Flutter project.
+Gatekeeper Mobile is the mobile client of the **Gatekeeper Project**, designed to provide secure, scalable, and user-friendly access management on the go.  
+This app integrates with the Gatekeeper backend to handle authentication and authorization
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 📱 Features
+- 🔐 **Secure Authentication**: Login with JWT/session tokens, OAuth2, or API keys.
+- 📊 **Dashboard Access**: View and manage gate entries, logs, and alerts.
+- 🌐 **Cross-platform Support**: Runs on both Android and iOS.
+- 🎨 **Modern UI/UX**: Clean, responsive design optimized for mobile.
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ Tech Stack
+- **Frontend Framework**: Flutter (Dart)  
+- **State Management**: Provider
+- **Networking**: REST APIs with secure headers (Bearer tokens)  
+- **Storage**: Secure local storage for tokens and preferences 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Install [Flutter SDK](https://docs.flutter.dev/get-started/install) 
+- Android Studio / Xcode for emulators
+- Access to Gatekeeper backend API (credentials required)
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/your-org/gatekeeper-mobile.git
+cd gatekeeper-mobile
+
+# Install dependencies
+flutter pub get
